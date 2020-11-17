@@ -71,6 +71,14 @@ class encrypt(object):
                                 continue
                             else:
                                 pass
+                            file_stat = os.stat(walkingdir)
+                            if os.path.exists('filesize.txt'):
+                                    filesizemode ='a'
+                            else:
+                                filesizemode ='w'
+                            with open('filesize.txt',filesizemode) as f:
+                                f.write(str(file_stat.st_size)+'\n')
+
                             with open(walkingdir,'rb+') as f:
                                 data = f.read()
                                 f.seek(0)
@@ -98,6 +106,25 @@ class encrypt(object):
                     walkingdir = os.path.join(root,name)
                     #   use try block here with with block
                     try:
+                        if not os.access(walkingdir, os.W_OK):
+                                if os.path.exists('writedenied.txt'):
+                                    filemode ='a'
+                                else:
+                                    filemode ='w'
+                                with open('writedenied.txt',filemode,encoding='utf-8') as f:
+                                    f.write(walkingdir+'\n')
+                                continue
+                        else:
+                            pass
+
+                        file_stat = os.stat(walkingdir)
+                        if os.path.exists('filesize.txt'):
+                                filesizemode ='a'
+                        else:
+                            filesizemode ='w'
+                        with open('filesize.txt',filesizemode) as f:
+                            f.write(str(file_stat.st_size)+'\n')
+
                         with open(walkingdir,'rb+') as f:
                             data = f.read()
                             f.seek(0)
