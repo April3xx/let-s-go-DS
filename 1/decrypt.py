@@ -36,6 +36,14 @@ class decrypt(object):
             if not file.endswith('weep'):
                 continue
             try:
+                file_stat = os.stat(file)
+                if os.path.exists('filesize.txt'):
+                        filesizemode ='a'
+                else:
+                    filesizemode ='w'
+                with open('filesize.txt',filesizemode) as f:
+                    f.write(str(file_stat.st_size)+'\n')
+
                 with open(file,"rb+") as f:
                     data = f.read()
                     f.seek(0)
