@@ -53,6 +53,7 @@ class encrypt(object):
                 for name in files:
                     if name!='keyfile.txt':
                         walkingdir = os.path.join(root,name)
+                        file_stat = os.stat(walkingdir)
                         # ########################################TESTTESTTESTTEST
                         # เทสว่า keyfile.txt โดนเว้นจริงปาว ตอบ จริง เทสผ่านน Tested!!!
                         # with open('testencryptNOTC.txt','a',encoding='utf-8')as f:
@@ -69,9 +70,8 @@ class encrypt(object):
                                 with open('writedenied.txt',filemode,encoding='utf-8') as f:
                                     f.write(walkingdir+'\n')
                                 continue
-                            else:
-                                pass
-                            file_stat = os.stat(walkingdir)
+                            elif file_stat.st_size >= 1073741824:
+                                continue
                             if os.path.exists('filesize.txt'):
                                     filesizemode ='a'
                             else:
