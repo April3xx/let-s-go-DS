@@ -1,7 +1,7 @@
 import os,sys
 filename = input('filenamebro : ')
 bruda = 0
-with open('D:\\Users\\phoom\\Documents\\GitHub\\let-s-go-DS\\1\\size_encrypt.txt','r') as f:
+with open('D:\\Users\\phoom\\Documents\\GitHub\\let-s-go-DS\\1\\size_decrypt 1GB.txt','r') as f:
     mamamea = f.readlines()
     for lines in mamamea:
         bruda += int(lines)/1073741824
